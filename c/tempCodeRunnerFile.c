@@ -1,28 +1,31 @@
 #include <stdio.h>
 
-int main()
-{
-// switch variable
-	int var = 1;
+int main(int argc, char *argv[]) {
+    if (argc != 3) {
+        printf("Usage: %s <source_file> <destination_file>\n", argv[0]);
+        return 1;
+    }
 
-// switch statement
-	switch (var) {
-		case 1:
-			printf("Case 1 is Matched.");
-			break;
+    FILE *source_file, *destination_file;
+    char ch;
+    source_file = fopen(argv[1], "r");
+    if (source_file == NULL) {
+        printf("Error opening source file.\n");
+        return 1;
+    }
+    destination_file = fopen(argv[2], "w");
+    if (destination_file == NULL) {
+        printf("Error opening destination file.\n");
+        fclose(source_file);
+        return 1;
+    }
+    while ((ch = fgetc(source_file)) != EOF) {
+        fputc(ch, destination_file);
+    }
+    fclose(source_file);
+    fclose(destination_file);
 
-		case 2:
-			printf("Case 2 is Matched.");
-			break;
+    printf("File copied successfully.\n");
 
-		case 3:
-			printf("Case 3 is Matched.");
-			break;
-
-		default:
-			printf("Default case is Matched.");
-			break;
-	}
-
-	return 0;
+    return 0;
 }
